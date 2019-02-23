@@ -20,6 +20,6 @@
 * https://gobyexample.com/
 * https://eagain.net/articles/go-dynamic-json/
 * https://medium.com/@marcus.olsson/writing-a-go-client-for-your-restful-api-c193a2f4998c
-
+* https://www.calhoun.io/concatenating-and-building-strings-in-go/
 
 # What Next?

@@ -3,7 +3,6 @@ package cloudfoundry
 import (
 	"crypto/tls"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"net/url"
 	"strings"
@@ -19,6 +18,7 @@ type CloudController struct {
 	QuotaDefinitionMap *map[string]*QuotaDefinitionInfo
 	OrganizationMap    *map[string]*OrganizationInfo
 	SpaceMap           *map[string]*SpaceInfo
+	AppMap             *map[string]*AppInfo
 }
 
 // NewCloudController returns a new CloudController client for the given url.
@@ -108,35 +108,6 @@ func (c *CloudController) GetV2Info() (*V2Info, error) {
 	return &i, err
 }
 
-// GetAppInfo delivery details for the given app guid.
-func (c *CloudController) GetAppInfo(guid string) (*AppInfo, error) {
-
-	if guid == "" {
-		return nil, errors.New("app guid is empty")
-	}
-
-	appURL := c.APIUrl.ResolveReference(&url.URL{Path: "/v2/apps/" + guid})
-
-	req, err := http.NewRequest("GET", appURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "Bearer "+c.AccessToken.AccessToken)
-
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	var ai AppInfo
-	err = json.NewDecoder(resp.Body).Decode(&ai)
-
-	return &ai, err
-
-}
-
 // V2Info represents general info about V2 cloud controller API.
 type V2Info struct {
 	Name                     string `json:"name"`
@@ -165,56 +136,4 @@ type AccessTokenInfo struct {
 	ExpiresIn    int    `json:"expires_in"`
 	Scope        string `json:"scope"`
 	JTI          string `json:"jti"`
-}
-
-// AppInfo contains application specific details
-type AppInfo struct {
-	Metadata Metadata
-	Entity   AppEntity
-}
-
-// AppEntity contains Entity data for the application.
-type AppEntity struct {
-	Name string `json:"name"`
-	// 	  "production": false,
-	SpaceGUID string `json:"space_guid"`
-	StackGUID string `json:"stack_guid"`
-	// 	  "buildpack": null,
-	// 	  "detected_buildpack": null,
-	// 	  "detected_buildpack_guid": null,
-	// 	  "environment_json": null,
-	// 	  "memory": 1024,
-	// 	  "instances": 1,
-	// 	  "disk_quota": 1024,
-	// 	  "state": "STOPPED",
-	// 	  "version": "df19a7ea-2003-4ecb-a909-e630e43f2719",
-	// 	  "command": null,
-	// 	  "console": false,
-	// 	  "debug": null,
-	// 	  "staging_task_id": null,
-	// 	  "package_state": "PENDING",
-	// 	  "health_check_http_endpoint": "",
-	HealthCheckTyep    string `json:"health_check_type"`
-	HealthCheckTimeout string `json:"health_check_timeout"`
-	// 	  "staging_failed_reason": null,
-	// 	  "staging_failed_description": null,
-	// 	  "diego": false,
-	// 	  "docker_image": null,
-	// 	  "docker_credentials": {
-	// 		"username": null,
-	// 		"password": null
-	// 	  },
-	// 	  "package_updated_at": "2016-06-08T16:41:45Z",
-	// 	  "detected_start_command": "",
-	// 	  "enable_ssh": true,
-	// 	  "ports": null,
-	// 	  "space_url": "/v2/spaces/7846301e-c84c-4ba9-9c6a-2dfdae948d52",
-	// 	  "stack_url": "/v2/stacks/7e03186d-a438-4285-b3b7-c426532e1df2",
-	// 	  "routes_url": "/v2/apps/15b3885d-0351-4b9b-8697-86641668c123/routes",
-	// 	  "events_url": "/v2/apps/15b3885d-0351-4b9b-8697-86641668c123/events",
-	// 	  "service_bindings_url": "/v2/apps/15b3885d-0351-4b9b-8697-86641668c123/service_bindings",
-	// 	  "route_mappings_url": "/v2/apps/15b3885d-0351-4b9b-8697-86641668c123/route_mappings"
-	// 	}
-	//   }
-
 }

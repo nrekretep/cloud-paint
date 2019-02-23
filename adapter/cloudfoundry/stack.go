@@ -33,7 +33,7 @@ func (c *CloudController) GetStacks() error {
 		if err != nil {
 			return err
 		}
-		resultMap[si.Metadata.GUID] = si
+		resultMap[si.Entity.Name] = si
 		fmt.Println(si.Metadata.GUID)
 		fmt.Println(si.Metadata.CreatedAt)
 		fmt.Println(si.Metadata.UpdatedAt)
