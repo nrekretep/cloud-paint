@@ -1,0 +1,25 @@
+@startuml
+[Plant UML] as PUML
+
+package "Cloud Foundry" {
+  () "Cloud Controller API" as CCAPI
+  [Cloud Controller] as CC
+  CCAPI - CC
+}
+
+package "Cloudpaint" {
+
+  [CLI Port] as P_CLI
+  [REST Port] as P_REST
+
+  [Cloud Paint Domain]
+
+
+  [Plant UML Adapter] as A_PUML
+  [Cloud Controller Adapter] as A_CC
+
+  A_CC ..> CCAPI
+  A_PUML ..> PUML
+}
+@enduml
+

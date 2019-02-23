@@ -1,0 +1,5 @@
+@startuml
+"Cloud Paint" --> "Cloud Controller API" : Get Info
+"Cloud Paint" --> "CC Authorization Endpoint" : Login and get Access Token
+"Cloud Paint" --> "Cloud Controller API" : Get Info for single App
+@enduml
