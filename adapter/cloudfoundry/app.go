@@ -68,11 +68,11 @@ func (c *CloudController) GetApps() error {
 		}
 
 		resultMap[a.Metadata.GUID] = a
-		fmt.Println(a.Metadata.GUID)
-		fmt.Println(a.Metadata.CreatedAt)
-		fmt.Println(a.Metadata.UpdatedAt)
-		fmt.Println(a.Entity.Name)
-		fmt.Println("============")
+		// fmt.Println(a.Metadata.GUID)
+		// fmt.Println(a.Metadata.CreatedAt)
+		// fmt.Println(a.Metadata.UpdatedAt)
+		// fmt.Println(a.Entity.Name)
+		// fmt.Println("============")
 	}
 
 	c.AppMap = &resultMap

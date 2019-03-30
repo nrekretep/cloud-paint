@@ -54,12 +54,12 @@ func (c *CloudController) GetSpaces() error {
 		}
 
 		resultMap[s.Metadata.GUID] = s
-		fmt.Println(s.Metadata.GUID)
-		fmt.Println(s.Metadata.CreatedAt)
-		fmt.Println(s.Metadata.UpdatedAt)
-		fmt.Println(s.Entity.Name)
-		fmt.Println(s.Entity.OrganizationGUID)
-		fmt.Println("============")
+		// fmt.Println(s.Metadata.GUID)
+		// fmt.Println(s.Metadata.CreatedAt)
+		// fmt.Println(s.Metadata.UpdatedAt)
+		// fmt.Println(s.Entity.Name)
+		// fmt.Println(s.Entity.OrganizationGUID)
+		// fmt.Println("============")
 	}
 
 	c.SpaceMap = &resultMap

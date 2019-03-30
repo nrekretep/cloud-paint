@@ -39,15 +39,15 @@ func (c *CloudController) GetBuildpacks() error {
 		}
 
 		resultMap[bpi.Metadata.GUID] = bpi
-		fmt.Println(bpi.Metadata.GUID)
-		fmt.Println(bpi.Metadata.CreatedAt)
-		fmt.Println(bpi.Metadata.UpdatedAt)
-		fmt.Println(bpi.Entity.Name)
-		fmt.Println(bpi.Entity.Filename)
-		fmt.Println(bpi.Entity.Position)
-		fmt.Println(bpi.Entity.Locked)
-		fmt.Println(bpi.Entity.Enabled)
-		fmt.Println("============")
+		// fmt.Println(bpi.Metadata.GUID)
+		// fmt.Println(bpi.Metadata.CreatedAt)
+		// fmt.Println(bpi.Metadata.UpdatedAt)
+		// fmt.Println(bpi.Entity.Name)
+		// fmt.Println(bpi.Entity.Filename)
+		// fmt.Println(bpi.Entity.Position)
+		// fmt.Println(bpi.Entity.Locked)
+		// fmt.Println(bpi.Entity.Enabled)
+		// fmt.Println("============")
 	}
 
 	c.BuildpackMap = &resultMap

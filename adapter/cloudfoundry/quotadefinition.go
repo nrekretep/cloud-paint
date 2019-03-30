@@ -45,14 +45,14 @@ func (c *CloudController) GetQuotaDefinitions() error {
 		}
 
 		resultMap[oqdi.Metadata.GUID] = oqdi
-		fmt.Println(oqdi.Metadata.GUID)
-		fmt.Println(oqdi.Metadata.CreatedAt)
-		fmt.Println(oqdi.Metadata.UpdatedAt)
-		fmt.Println(oqdi.Entity.Name)
-		fmt.Println(oqdi.Entity.TotalService)
-		fmt.Println(oqdi.Entity.TotalRoutes)
-		fmt.Println(oqdi.Entity.InstanceMemoryLimit)
-		fmt.Println("============")
+		// fmt.Println(oqdi.Metadata.GUID)
+		// fmt.Println(oqdi.Metadata.CreatedAt)
+		// fmt.Println(oqdi.Metadata.UpdatedAt)
+		// fmt.Println(oqdi.Entity.Name)
+		// fmt.Println(oqdi.Entity.TotalService)
+		// fmt.Println(oqdi.Entity.TotalRoutes)
+		// fmt.Println(oqdi.Entity.InstanceMemoryLimit)
+		// fmt.Println("============")
 	}
 
 	c.QuotaDefinitionMap = &resultMap

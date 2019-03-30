@@ -3,13 +3,24 @@ package cloudfoundry
 import (
 	"crypto/tls"
 	"encoding/json"
+	"errors"
+	"github.com/nrekretep/cloudpaint/adapter/cloudfoundry/v3"
 	"net/http"
 	"net/url"
 	"strings"
 )
 
+// CloudControllerConfig provides Cloud Foundry specific configuration options
+type CloudControllerConfig struct {
+	Username     string
+	Password     string
+	APIURLString string
+	APIURL       *url.URL
+}
+
 // CloudController provides access to the cc API.
 type CloudController struct {
+	Config             *CloudControllerConfig
 	APIUrl             *url.URL
 	httpClient         *http.Client
 	AccessToken        *AccessTokenInfo
@@ -22,7 +33,14 @@ type CloudController struct {
 }
 
 // NewCloudController returns a new CloudController client for the given url.
-func NewCloudController(apiURL string) *CloudController {
+func NewCloudController(config CloudControllerConfig) (*CloudController, error) {
+
+	err := checkConfig(&config)
+
+	if err != nil {
+		return nil, err
+	}
+
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		Proxy:           http.ProxyFromEnvironment,
@@ -30,22 +48,44 @@ func NewCloudController(apiURL string) *CloudController {
 
 	httpClient := &http.Client{Transport: tr}
 
-	u, err := url.Parse(apiURL)
-	if err != nil {
-		return nil
+	c := &CloudController{httpClient: httpClient, APIUrl: config.APIURL, Config: &config}
+
+	return c, nil
+}
+
+func checkConfig(c *CloudControllerConfig) error {
+
+	if c == nil {
+		return errors.New("config cannot be empty")
 	}
 
-	c := &CloudController{httpClient: httpClient, APIUrl: u}
+	if c.Username == "" {
+		return errors.New("username cannot be empty")
+	}
 
-	return c
+	if c.Password == "" {
+		return errors.New("password cannot be empty")
+	}
+
+	if c.APIURLString == "" {
+		return errors.New("apiUrl cannot be empty")
+	}
+
+	u, err := url.Parse(c.APIURLString)
+	if err != nil {
+		return err
+	}
+	c.APIURL = u
+
+	return nil
 }
 
 // Login to CC API and retrieve the access token.
-func (c *CloudController) Login(usename string, password string) error {
+func (c *CloudController) Login() error {
 
 	parameters := url.Values{}
-	parameters.Set("username", usename)
-	parameters.Set("password", password)
+	parameters.Set("username", c.Config.Username)
+	parameters.Set("password", c.Config.Password)
 	parameters.Set("scope", "")
 	parameters.Set("grant_type", "password")
 
@@ -136,4 +176,32 @@ type AccessTokenInfo struct {
 	ExpiresIn    int    `json:"expires_in"`
 	Scope        string `json:"scope"`
 	JTI          string `json:"jti"`
+}
+
+// GetV3App
+func (c *CloudController) GetV3App(appID string) (*v3.App, error) {
+	apiURLRelative := &url.URL{Path: "/v3/apps/" + appID}
+	apiURL := c.APIUrl.ResolveReference(apiURLRelative)
+
+	req, err := http.NewRequest("GET", apiURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+c.AccessToken.AccessToken)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var a v3.App
+	err = json.NewDecoder(resp.Body).Decode(&a)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &a, nil
 }

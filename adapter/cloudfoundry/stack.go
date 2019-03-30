@@ -2,7 +2,7 @@ package cloudfoundry
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	// "errors"
 	// "net/http"
 	// "net/url"
@@ -34,12 +34,12 @@ func (c *CloudController) GetStacks() error {
 			return err
 		}
 		resultMap[si.Entity.Name] = si
-		fmt.Println(si.Metadata.GUID)
-		fmt.Println(si.Metadata.CreatedAt)
-		fmt.Println(si.Metadata.UpdatedAt)
-		fmt.Println(si.Entity.Name)
-		fmt.Println(si.Entity.Description)
-		fmt.Println("============")
+		// fmt.Println(si.Metadata.GUID)
+		// fmt.Println(si.Metadata.CreatedAt)
+		// fmt.Println(si.Metadata.UpdatedAt)
+		// fmt.Println(si.Entity.Name)
+		// fmt.Println(si.Entity.Description)
+		// fmt.Println("============")
 	}
 
 	c.StackMap = &resultMap

@@ -56,14 +56,14 @@ func (c *CloudController) GetOrganizations() error {
 		}
 
 		resultMap[o.Metadata.GUID] = o
-		fmt.Println(o.Metadata.GUID)
-		fmt.Println(o.Metadata.CreatedAt)
-		fmt.Println(o.Metadata.UpdatedAt)
-		fmt.Println(o.Entity.Name)
-		fmt.Println(o.Entity.Status)
-		fmt.Println(o.Entity.ManagersURL)
-		fmt.Println(o.Entity.SpaceQuotaDefinitionsURL)
-		fmt.Println("============")
+		// fmt.Println(o.Metadata.GUID)
+		// fmt.Println(o.Metadata.CreatedAt)
+		// fmt.Println(o.Metadata.UpdatedAt)
+		// fmt.Println(o.Entity.Name)
+		// fmt.Println(o.Entity.Status)
+		// fmt.Println(o.Entity.ManagersURL)
+		// fmt.Println(o.Entity.SpaceQuotaDefinitionsURL)
+		// fmt.Println("============")
 	}
 
 	c.OrganizationMap = &resultMap
